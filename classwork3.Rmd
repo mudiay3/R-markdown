@@ -1,0 +1,110 @@
+---
+title: "Classwork 3"
+author: "Mutlu Dilara Aydın"
+date: "Feb 6, 2026"
+output: pdf_document
+---
+
+## **Task 1: Install and Explore a Dataset**
+
+-   Let's install some test data
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+ 
+    install.packages("palmerpenguins")
+    library(palmerpenguins)
+    ```
+
+-   Loads the dataset
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    data("penguins", package = "palmerpenguins")
+    ```
+
+-   Explore your dataset
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    View(penguins)
+    force(penguins)
+    ```
+
+-   See variable names and coding info
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    data(package = "palmerpenguins")
+    help(package = "palmerpenguins")
+    ?penguins
+    summary(penguins)
+    ```
+
+## Task 2: Turn a Dataset from Wide to Long
+
+-   First we need a package to do this
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    install.packages("tidyverse")
+    library(tidyr)
+    ```
+
+-   Then upload gdp_test data to R
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    gdp_data <- read.csv("C:/Users/User/Desktop/gdp_test.csv")
+    ```
+
+-   Do the conversion
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    gdp_long <- pivot_longer(gdp_data, cols = X1960:X1970)
+    ```
+
+    -   Let's be more specific
+
+        ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+        gdp_long <- pivot_longer(gdp_data, cols = X1960:X1970, names_to = "year", values_to = "GDP")
+        ```
+
+-   Save the new dataset
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    write.csv(gdp_long, "C:/Users/User/Desktop/gdp_test_long.csv")
+
+    ```
+
+## Task 3: Merging Datasets
+
+-   First you need package to do this
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    install.packages("dplyr")
+    library(dplyr)
+    ```
+
+-   Today we use two CoW datasets (Diplomatic Exchange and International Trade)
+
+    -   Let's bring datasets into R
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    diplomatic_data <- read.csv("C:/Users/User/Desktop/diplomacy_test.csv")
+    trade_data <- read.csv("C:/Users/User/Desktop/trade_test.csv")
+    ```
+
+-   Do the merging, to do so we check matching columns (variable names)
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    merged_data <- inner_join(diplomatic_data, trade_data, by = c("ccode1", "ccode2", "year"))
+    ```
+
+-   Some alternative codes for merging
+
+    `inner_join()` → Keeps only matching rows from both datasets
+
+    `left_join()` → Keeps all data from initial dataset and matches available data from secodary dataset.
+
+    `full_join()` → Keeps all data from both datasets.
+
+-   Save the new merged dataset
+
+    ```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE, results='hide'}
+    write.csv(merged_data,"C:/Users/User/Desktop/Merged_Diplomacy_Trade.csv")
+    ```
